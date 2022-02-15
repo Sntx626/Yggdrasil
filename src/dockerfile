@@ -1,0 +1,14 @@
+FROM python:buster
+
+RUN mkdir yggdrasil
+
+COPY ./rsc/requirements.txt /yggdrasil
+RUN pip install -U -r /yggdrasil/requirements.txt
+
+COPY ./main.py /yggdrasil
+COPY ./src/bot.py /yggdrasil
+
+WORKDIR /yggdrasil
+
+# Run the application
+CMD ["python", "main.py"]

@@ -1,0 +1,41 @@
+version: "3"
+services:
+    db:
+        container_name: PostgreSQL
+        image: postgres:alpine
+        volumes:
+            - postgresql_data:/var/lib/postgresql/data
+        networks:
+            - postgres_network
+        env_file:
+            - ./rsc/.env
+        restart: always
+    bot:
+        container_name: Yggdrasil
+        build:
+            context: .
+            dockerfile: ./src/dockerfile
+        volumes: 
+            - ./src:/yggdrasil/src
+        networks:
+            - postgres_network
+        depends_on:
+            - db
+        env_file:
+            - ./rsc/.env
+    db_backup:
+        container_name: PostgresBackup
+        image: prodrigestivill/postgres-backup-local
+        volumes:
+            - ./rsc/backups:/backups
+        networks:
+            - postgres_network
+        depends_on:
+            - db
+        env_file:
+            - ./rsc/.env
+        restart: always
+networks:
+    postgres_network:
+volumes:
+    postgresql_data:
