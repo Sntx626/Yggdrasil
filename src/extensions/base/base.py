@@ -35,7 +35,6 @@ async def reload_extension(ctx: lightbulb.Context) -> None:
 
     try:
         is_first_load = False
-
         try:
             ctx.bot.unload_extensions(
                 f'src.extensions.{ctx.options.extension_name}.{ctx.options.extension_name}'

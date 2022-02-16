@@ -10,7 +10,6 @@ import lightbulb
 
 class Yggdrasil(lightbulb.BotApp):
     def init_extensions(self, extension_dir:str) -> None:
-
         extension_config_dir = os.path.normpath(f'{extension_dir}/enabled_extensions.json')
 
         assert os.path.exists(
@@ -28,12 +27,30 @@ class Yggdrasil(lightbulb.BotApp):
                 )
 
     async def init_database(self) -> None:
-        self.db_pool = await asyncpg.create_pool(
-            user=os.environ['POSTGRES_USER'],
-            password=os.environ['POSTGRES_PASSWORD'],
-            database=os.environ['POSTGRES_DB'],
-            host=os.environ['POSTGRES_HOST']
-        )
+        try:
+            self.db_pool = await asyncpg.create_pool(
+                user=os.environ['POSTGRES_USER'],
+                password=os.environ['POSTGRES_PASSWORD'],
+                database=os.environ['POSTGRES_DB'],
+                host=os.environ['POSTGRES_HOST']
+            )
+        except asyncpg.exceptions.InvalidCatalogNameError as e:
+            self.db_pool = await asyncpg.create_pool(
+                user=os.environ['POSTGRES_USER'],
+                password=os.environ['POSTGRES_PASSWORD'],
+                host=os.environ['POSTGRES_HOST']
+            )
+            async with self.db_pool.acuire() as conn:
+                await conn.execute("CREATE DATABASE $1", os.environ['POSTGRES_DB'])
+                # seed database
+            self.db_pool.close()
+
+            self.db_pool = await asyncpg.create_pool(
+                user=os.environ['POSTGRES_USER'],
+                password=os.environ['POSTGRES_PASSWORD'],
+                database=os.environ['POSTGRES_DB'],
+                host=os.environ['POSTGRES_HOST']
+            )
 
 def get_bot() -> Yggdrasil:
     bot = Yggdrasil(
