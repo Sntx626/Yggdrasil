@@ -9,8 +9,6 @@ import lightbulb
 
 
 class Yggdrasil(lightbulb.BotApp):
-    # Load extensions from extension packages
-    # Add extensions.json for enabling extensions
     def init_extensions(self, extension_dir:str) -> None:
 
         extension_config_dir = os.path.normpath(f'{extension_dir}/enabled_extensions.json')
