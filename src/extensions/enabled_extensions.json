@@ -1,8 +1,9 @@
 {
+    "base": true,
     "admin": false,
     "dice": false,
     "experience": false,
     "misc": false,
     "voice": false,
-    "wolframalpha": true
+    "wolframalpha": false
 }
