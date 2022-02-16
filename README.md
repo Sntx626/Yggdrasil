@@ -1,5 +1,7 @@
 # Ygggdrasil
 
+This is the development branch of the bot.
+
 A simplistic bot designed to streamline your server experience.
 
 Design Ideas
