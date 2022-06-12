@@ -1,4 +1,5 @@
 config.json
+!src\extensions\welcome\config.json
 rsc/backups/*
 rsc/backups.bak/*
 temp/*
