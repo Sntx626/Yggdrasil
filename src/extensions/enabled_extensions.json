@@ -4,5 +4,6 @@
     "experience": false,
     "misc": false,
     "voice": false,
-    "wolframalpha": true
+    "wolframalpha": false,
+    "welcome": true
 }
