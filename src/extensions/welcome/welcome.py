@@ -22,12 +22,12 @@ async def welcome_group(ctx: lightbulb.Context) -> None:
     pass  # as slash commands cannot have their top-level command ran, we simply pass here
 
 @welcome_group.child #Unterordnung unter welcome Group aus 18-22
-#@lightbulb.option("optionname", "description")
+@lightbulb.option("user", "User mention",hikari.User)
 @lightbulb.command("send", "description", auto_defer=True)
 @lightbulb.implements(lightbulb.SlashSubCommand)
 async def send(ctx: lightbulb.Context) -> None: #Command wird als Methode erstellt
     await ctx.respond(hikari.ResponseType.DEFERRED_MESSAGE_CREATE) # temporary fix as auto_defer doesn't work rn
-    await ctx.respond(config["interaction"]["welcome message 1"]) #Bot Antwort aus config
+    await ctx.respond(f"{config['interaction']['welcome message 1']} {ctx.options.user}") #Bot Antwort aus config
 
 def load(bot: lightbulb.BotApp) -> None:
     bot.add_plugin(welcome_plugin)
